@@ -22,10 +22,38 @@ pipeline {
                     url: 'https://github.com/PilotProjects/TUDGIS.git'
             }
         }
-        stage("docker-compose up") {
+        stage("active venv") {
             steps {
-                sh 'docker-compose up --build -d'
+                sh 'source /home/rt/projects/env_38/bin/activate'
             }
         }
+
+        stage("active venv") {
+            steps {
+                sh 'pip3 list'
+            }
+        }
+        // stage("docker compose down") {
+        //     steps {
+        //         sh 'docker-compose down'
+        //     }
+        // }
+        // stage("docker-compose up") {
+        //     steps {
+        //         sh 'docker-compose up --build -d'
+        //     }
+        // }
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }
