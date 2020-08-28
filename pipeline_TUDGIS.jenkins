@@ -22,17 +22,15 @@ pipeline {
                     url: 'https://github.com/PilotProjects/TUDGIS.git'
             }
         }
-        stage("active venv") {
+        stage("venv actions") {
             steps {
-                sh 'source /home/rt/projects/env_38/bin/activate'
+                withPythonEnv('/home/rt/projects/env_38/')
+                    {
+                      sh 'python3 /app/manage.py collectstatic'
+                    }
             }
         }
 
-        stage("list") {
-            steps {
-                sh 'pip3 list'
-            }
-        }
         // stage("docker compose down") {
         //     steps {
         //         sh 'docker-compose down'
