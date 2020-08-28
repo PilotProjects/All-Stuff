@@ -28,7 +28,7 @@ pipeline {
             }
         }
 
-        stage("active venv") {
+        stage("list") {
             steps {
                 sh 'pip3 list'
             }
@@ -43,17 +43,6 @@ pipeline {
         //         sh 'docker-compose up --build -d'
         //     }
         // }
-
-
-
-
-
-
-
-
-
-
-
 
     }
 }
