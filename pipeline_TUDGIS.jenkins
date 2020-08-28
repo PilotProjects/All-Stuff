@@ -26,7 +26,7 @@ pipeline {
             steps {
                 withPythonEnv('/home/rt/projects/env_38/')
                     {
-                      sh 'python3 /app/manage.py collectstatic'
+                      sh 'python3 app/manage.py collectstatic'
                     }
             }
         }
