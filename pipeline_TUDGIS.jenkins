@@ -22,25 +22,25 @@ pipeline {
                     url: 'https://github.com/PilotProjects/TUDGIS.git'
             }
         }
-        stage("venv actions") {
+        stage("venv actions collec tstatic") {
             steps {
                 withPythonEnv('/home/rt/projects/env_38/')
                     {
-                      sh 'python3 app/manage.py collectstatic'
+                      sh 'python3 app/manage.py collectstatic --noinput'
                     }
             }
         }
 
-        // stage("docker compose down") {
-        //     steps {
-        //         sh 'docker-compose down'
-        //     }
-        // }
-        // stage("docker-compose up") {
-        //     steps {
-        //         sh 'docker-compose up --build -d'
-        //     }
-        // }
+        stage("docker compose down") {
+            steps {
+                sh 'docker-compose down'
+            }
+        }
+        stage("docker-compose up") {
+            steps {
+                sh 'docker-compose up --build -d'
+            }
+        }
 
     }
 }
