@@ -1,0 +1,31 @@
+#!groovy
+// Check ub1 properties
+properties([disableConcurrentBuilds()])
+
+pipeline {
+    agent {
+         node {
+            label 'production_server'
+            customWorkspace '/home/rt/jenkins/workspace'
+                }
+            }
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
+        timestamps()
+    }
+    stages {
+        stage("Clone Repo") {
+            steps {
+                sh 'whoami'
+                git branch: 'master',
+                    credentialsId: 'b9e49e7d-d9bd-449c-923b-59c818b049f8',
+                    url: 'https://github.com/PilotProjects/TUDGIS.git'
+            }
+        }
+        stage("Second step") {
+            steps {
+                sh 'pwd'
+            }
+        }
+    }
+}
