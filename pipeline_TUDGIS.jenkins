@@ -6,7 +6,7 @@ pipeline {
     agent {
          node {
             label 'production_server'
-            customWorkspace '/home/rt/jenkins/workspace'
+            customWorkspace '/home/rt/jenkins/workspace/TUDGIS'
                 }
             }
     options {
@@ -22,9 +22,9 @@ pipeline {
                     url: 'https://github.com/PilotProjects/TUDGIS.git'
             }
         }
-        stage("Second step") {
+        stage("docker-compose up") {
             steps {
-                sh 'pwd'
+                sh 'docker-compose up --build -d'
             }
         }
     }
