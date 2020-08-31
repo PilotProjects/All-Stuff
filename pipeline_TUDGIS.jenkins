@@ -1,7 +1,7 @@
 #!groovy
 // Check ub1 properties
 def response() {
-    httpRequest "http://192.168.2.20:8001/message_sender/?person=${pusher}&text=build done"
+    httpRequest "http://192.168.2.20:8001/message_sender/?person=${pusher}&text=build_done"
 }
 
 properties([disableConcurrentBuilds()])
