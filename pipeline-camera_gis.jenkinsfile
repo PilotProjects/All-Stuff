@@ -1,0 +1,45 @@
+#!groovy
+// Check ub1 properties
+properties([disableConcurrentBuilds()])
+
+pipeline {
+      agent {
+         node {
+            label 'node1'
+            customWorkspace '/home/node1/workspace/camera_gis-pipeline'
+                }
+             }
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
+
+    }
+    stages {
+        stage("Clone Repo") {
+            steps {
+                git branch: 'loba',
+                    credentialsId: 'b9e49e7d-d9bd-449c-923b-59c818b049f8',
+                    url: 'https://github.com/PilotProjects/camera_gis'
+            }
+        }
+        stage("venv actions collec tstatic") {
+            steps {
+                withPythonEnv('/home/node1/projects/camgis_env/')
+                    {
+                      sh 'python3 app/manage.py collectstatic --noinput'
+                    }
+            }
+        }
+
+        stage("docker compose down") {
+            steps {
+                sh 'docker-compose down'
+            }
+        }
+        stage("docker-compose up") {
+            steps {
+                sh 'docker-compose up --build -d'
+            }
+        }
+
+    }
+}
