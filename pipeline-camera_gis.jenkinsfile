@@ -1,5 +1,9 @@
 #!groovy
 // Check ub1 properties
+def response() {
+    httpRequest "http://192.168.2.20:8001/message_sender/?person=${pusher}&text=build+${repository_name}+done"
+}
+
 properties([disableConcurrentBuilds()])
 
 pipeline {
@@ -43,3 +47,4 @@ pipeline {
 
     }
 }
+response()
