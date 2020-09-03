@@ -17,7 +17,6 @@ pipeline {
     )
 }
 
-
     agent {
          node {
             label 'production_server'
