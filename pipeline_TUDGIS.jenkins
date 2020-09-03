@@ -21,7 +21,8 @@ pipeline {
       GenericTrigger(
           genericVariables: [
               [key: 'ref', value: '$.ref']
-          ]
+          ],
+          printContributedVariables: true
       )
     }
     options {
