@@ -6,7 +6,13 @@ def response() {
 
 properties([disableConcurrentBuilds()])
 
-
+GenericTrigger(
+    genericVariables: [
+        [key: 'ref', value: '$.ref']
+        [key: 'pusher', value: '$.pusher.name']
+        [key: 'repository_name', value: '$.repository.full_name']
+    ]
+)
 
 
 pipeline {
@@ -17,15 +23,9 @@ pipeline {
                 }
             }
 
-    triggers {
-      GenericTrigger(
-          genericVariables: [
-              [key: 'ref', value: '$.ref']
-              [key: 'pusher', value: '$.pusher.name']
-              [key: 'repository_name', value: '$.repository.full_name']
-          ]
-      )
-    }
+
+
+
     options {
         buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
         timestamps()
