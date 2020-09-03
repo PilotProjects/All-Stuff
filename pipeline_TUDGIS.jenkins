@@ -7,6 +7,17 @@ def response() {
 properties([disableConcurrentBuilds()])
 
 pipeline {
+  triggers {
+    GenericTrigger(
+        genericVariables: [
+            [key: 'ref', value: '$.ref']
+            [key: 'pusher', value: '$.pusher.name']
+            [key: 'repository_name', value: '$.repository.full_name']
+        ]
+    )
+}
+
+
     agent {
          node {
             label 'production_server'
