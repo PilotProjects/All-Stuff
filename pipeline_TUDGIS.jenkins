@@ -21,8 +21,6 @@ pipeline {
       GenericTrigger(
           genericVariables: [
               [key: 'ref', value: '$.ref']
-              [key: 'pusher', value: '$.pusher.name']
-              [key: 'repository_name', value: '$.repository.full_name']
           ]
       )
     }
