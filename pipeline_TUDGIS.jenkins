@@ -27,7 +27,7 @@ pipeline {
 
     stages {
         stage("Clone Repo") {
-            when {equals 'ref' 'refs/heads/loba'}
+            when {equals ref 'refs/heads/loba'}
             steps {
                 sh 'whoami'
                 git branch: 'master',
