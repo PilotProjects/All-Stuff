@@ -5,69 +5,58 @@ def response() {
 }
 
 
-if (ref == 'refs/heads/loba') {
-  pipeline {
-      agent {
-           node {
-              label 'production_server'
-              customWorkspace '/home/rt/jenkins/workspace/TUDGIS'
-                  }
-              }
+pipeline {
+    agent {
+         node {
+            label 'production_server'
+            customWorkspace '/home/rt/jenkins/workspace/TUDGIS'
+                }
+            }
 
-      //  triggers {
-      //   GenericTrigger(
-      //       genericVariables: [
-      //           [key: 'ref', value: '$.ref'],
-      //           [key: 'pusher', value: '$.pusher.name'],
-      //           [key: 'repository_name', value: '$.repository.full_name']
-      //       ]
-      //   )
-      // }
-      options {
-          buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
-          timestamps()
-      }
+    //  triggers {
+    //   GenericTrigger(
+    //       genericVariables: [
+    //           [key: 'ref', value: '$.ref'],
+    //           [key: 'pusher', value: '$.pusher.name'],
+    //           [key: 'repository_name', value: '$.repository.full_name']
+    //       ]
+    //   )
+    // }
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
+        timestamps()
+    }
 
-      stages {
-          // when { branch 'master' }
-          stage("Clone Repo") {
-              steps {
-                  sh 'whoami'
-                  git branch: 'master',
-                      credentialsId: 'b9e49e7d-d9bd-449c-923b-59c818b049f8',
-                      url: 'https://github.com/PilotProjects/TUDGIS.git'
-              }
-          }
-          stage("venv actions collec tstatic") {
-              steps {
-                  withPythonEnv('/home/rt/projects/env_38/')
-                      {
-                        sh 'python3 app/manage.py collectstatic --noinput'
-                      }
-              }
-          }
+    stages {
+        when { ref 'refs/heads/loba' }
+        stage("Clone Repo") {
+            steps {
+                sh 'whoami'
+                git branch: 'master',
+                    credentialsId: 'b9e49e7d-d9bd-449c-923b-59c818b049f8',
+                    url: 'https://github.com/PilotProjects/TUDGIS.git'
+            }
+        }
+        stage("venv actions collec tstatic") {
+            steps {
+                withPythonEnv('/home/rt/projects/env_38/')
+                    {
+                      sh 'python3 app/manage.py collectstatic --noinput'
+                    }
+            }
+        }
 
-          stage("docker compose down") {
-              steps {
-                  sh 'docker-compose down'
-              }
-          }
-          stage("docker-compose up") {
-              steps {
-                  sh 'docker-compose up --build -d'
-              }
-          }
+        stage("docker compose down") {
+            steps {
+                sh 'docker-compose down'
+            }
+        }
+        stage("docker-compose up") {
+            steps {
+                sh 'docker-compose up --build -d'
+            }
+        }
 
-      }
-  }
-
-
-
+    }
 }
-
-else {
-    echo 'NOOOOOO'
-}
-
-
 response()
