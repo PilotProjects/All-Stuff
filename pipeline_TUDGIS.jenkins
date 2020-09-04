@@ -33,6 +33,8 @@ pipeline {
                     } else {
                         echo 'NOOOOOO'
                     }
+            }
+            
     stages {
         stage("Clone Repo") {
             steps {
