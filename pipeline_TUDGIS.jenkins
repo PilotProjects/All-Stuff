@@ -27,7 +27,7 @@ pipeline {
 
     stages {
         stage("Clone Repo") {
-            when {equals ref 'refs/heads/loba'}
+
             steps {
                 sh 'whoami'
                 git branch: 'master',
@@ -35,6 +35,7 @@ pipeline {
                     url: 'https://github.com/PilotProjects/TUDGIS.git'
             }
         }
+
         stage("venv actions collec tstatic") {
             steps {
                 withPythonEnv('/home/rt/projects/env_38/')
