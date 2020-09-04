@@ -4,14 +4,8 @@ def response() {
     httpRequest "http://192.168.2.20:8001/message_sender/?person=${pusher}&text=build+${repository_name}+done"
 }
 
-
 pipeline {
-    agent {
-         node {
-            label 'production_server'
-            customWorkspace '/home/rt/jenkins/workspace/TUDGIS'
-                }
-            }
+    agent {node { label 'production_server' customWorkspace '/home/rt/jenkins/workspace/TUDGIS'}}
 
     //  triggers {
     //   GenericTrigger(
@@ -28,8 +22,10 @@ pipeline {
     }
 
     stages {
-        when { ref 'refs/heads/loba' }
         stage("Clone Repo") {
+            when{
+              'ref' equals 'refs/heads/loba'
+            }
             steps {
                 sh 'whoami'
                 git branch: 'master',
