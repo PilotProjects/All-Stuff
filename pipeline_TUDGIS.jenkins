@@ -5,7 +5,11 @@ def response() {
 }
 
 pipeline {
-    agent {node { label 'production_server' customWorkspace '/home/rt/jenkins/workspace/TUDGIS'}}
+    agent {node {
+      label 'production_server'
+      customWorkspace '/home/rt/jenkins/workspace/TUDGIS'
+      }
+    }
 
     //  triggers {
     //   GenericTrigger(
@@ -23,9 +27,7 @@ pipeline {
 
     stages {
         stage("Clone Repo") {
-            when{
-              'ref' equals 'refs/heads/loba'
-            }
+            when {equals 'ref' 'refs/heads/loba'}
             steps {
                 sh 'whoami'
                 git branch: 'master',
