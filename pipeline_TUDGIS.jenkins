@@ -4,6 +4,14 @@ def response() {
     httpRequest "http://192.168.2.20:8001/message_sender/?person=${pusher}&text=build+${repository_name}+done"
 }
 
+
+if (ref == 'refs/heads/loba') {
+    echo 'GOT IT'
+} else {
+    echo 'NOOOOOO'
+}
+
+
 properties([disableConcurrentBuilds()])
 pipeline {
     agent {
@@ -27,15 +35,8 @@ pipeline {
         timestamps()
     }
 
-    script {
-                    if (ref == 'refs/heads/loba') {
-                        echo 'GOT IT'
-                    } else {
-                        echo 'NOOOOOO'
-                    }
-            }
-            
     stages {
+        // when { branch 'master' }
         stage("Clone Repo") {
             steps {
                 sh 'whoami'
