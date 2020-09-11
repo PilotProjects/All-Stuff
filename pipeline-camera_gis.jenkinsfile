@@ -20,6 +20,7 @@ pipeline {
     stages {
         stage("Clone Repo") {
             steps {
+                sh 'whoami'
                 git branch: 'loba',
                     credentialsId: 'b9e49e7d-d9bd-449c-923b-59c818b049f8',
                     url: 'https://github.com/PilotProjects/camera_gis'
@@ -44,6 +45,13 @@ pipeline {
                 sh 'docker-compose up --build -d'
             }
         }
+
+        stage("docker remove images") {
+            steps {
+                sh 'docker rmi $(docker images -f dangling=true -q)'
+            }
+        }
+
 
     }
 }
