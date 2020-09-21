@@ -17,40 +17,47 @@ pipeline {
     }
 
     stages {
-        stage("Clone Repo") {
+        stage('Deploying'){
+             when { environment name: 'branch', value: 'refs/heads/master' } 
+             stages{
+               stage("Clone Repo") {
+                   steps {
+                       sh 'whoami'
+                       git branch: 'master',
+                           credentialsId: 'b9e49e7d-d9bd-449c-923b-59c818b049f8',
+                           url: 'https://github.com/PilotProjects/TUDGIS.git'
+                   }
+               }
 
-            steps {
-                sh 'whoami'
-                git branch: 'master',
-                    credentialsId: 'b9e49e7d-d9bd-449c-923b-59c818b049f8',
-                    url: 'https://github.com/PilotProjects/TUDGIS.git'
-            }
-        }
+               stage("venv actions collec tstatic") {
+                   steps {
+                       withPythonEnv('/home/rt/projects/env_38/')
+                           {
+                             sh 'python3 app/manage.py collectstatic --noinput'
+                           }
+                   }
+               }
 
-        stage("venv actions collec tstatic") {
-            steps {
-                withPythonEnv('/home/rt/projects/env_38/')
-                    {
-                      sh 'python3 app/manage.py collectstatic --noinput'
-                    }
-            }
-        }
+               stage("docker compose down") {
+                   steps {
+                       sh 'docker-compose down'
+                   }
+               }
+               stage("docker-compose up") {
+                   steps {
+                       sh 'docker-compose up --build -d'
+                   }
+               }
 
-        stage("docker compose down") {
-            steps {
-                sh 'docker-compose down'
-            }
+               stage("docker remove images") {
+                   steps {
+                       sh 'docker rmi $(docker images -f dangling=true -q)'
+                   }
+               }
+             }
         }
-        stage("docker-compose up") {
-            steps {
-                sh 'docker-compose up --build -d'
-            }
-        }
-
-        stage("docker remove images") {
-            steps {
-                sh 'docker rmi $(docker images -f dangling=true -q)'
-            }
+        stage('Deploying'){
+          echo'commit to $branch'
         }
 
     }
