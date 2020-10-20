@@ -1,6 +1,10 @@
 #!groovy
 // Check ub1 properties
-def response() {
+def response_build() {
+    httpRequest "http://192.168.2.20:8001/message_sender/?person=${pusher}&text=build+${repository_name}+done"
+}
+
+def response_commit) {
     httpRequest "http://192.168.2.20:8001/message_sender/?person=${pusher}&text=build+${repository_name}+done"
 }
 
@@ -11,6 +15,10 @@ pipeline {
       }
     }
 
+    environment {
+        ACTION = ''
+    }
+
     options {
         buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
         timestamps()
@@ -19,6 +27,7 @@ pipeline {
     stages {
         stage('Deploying'){
              when { environment name: 'branch', value: 'refs/heads/master' }
+             ACTION = 'DEPLOY'
              stages{
                stage("Clone Repo") {
                    steps {
@@ -58,6 +67,7 @@ pipeline {
         }
 
         stage('Commit'){
+          ACTION = 'COMMIT'
           steps {
               echo'commit to $branch'
           }
@@ -66,4 +76,5 @@ pipeline {
 
     }
 }
-response()
+print(ACTION)
+response_build()
