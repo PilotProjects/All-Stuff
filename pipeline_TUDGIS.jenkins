@@ -76,5 +76,5 @@ pipeline {
 
     }
 }
-print(ACTION)
+println "ACTION"
 response_build()
