@@ -4,9 +4,9 @@ def response_build() {
     httpRequest "http://192.168.2.20:8001/message_sender/?person=${pusher}&text=build+${repository_name}+done"
 }
 
-def response_commit) {
-    httpRequest "http://192.168.2.20:8001/message_sender/?person=${pusher}&text=build+${repository_name}+done"
-}
+// def response_commit) {
+//     httpRequest "http://192.168.2.20:8001/message_sender/?person=${pusher}&text=build+${repository_name}+done"
+// }
 
 pipeline {
     agent {node {
