@@ -16,7 +16,7 @@ pipeline {
     }
 
     environment {
-        ACTION = ''
+        ACTION = 'LOL'
     }
 
     options {
@@ -27,7 +27,7 @@ pipeline {
     stages {
         stage('Deploying'){
              when { environment name: 'branch', value: 'refs/heads/master' }
-             ACTION = 'DEPLOY'
+             // ACTION = 'DEPLOY'
              stages{
                stage("Clone Repo") {
                    steps {
@@ -67,7 +67,7 @@ pipeline {
         }
 
         stage('Commit'){
-          ACTION = 'COMMIT'
+          // ACTION = 'COMMIT'
           steps {
               echo'commit to $branch'
           }
