@@ -1,12 +1,13 @@
 #!groovy
 // Check ub1 properties
 def response_build() {
-    httpRequest "http://192.168.2.20:8001/message_sender/?person=${pusher}&text=build+${repository_name}+done"
+    if (env.branch != "refs/heads/master"){
+      httpRequest "http://192.168.2.20:8001/message_sender/?person=${pusher}&text=just_commit"
+    }
+    else {
+      httpRequest "http://192.168.2.20:8001/message_sender/?person=${pusher}&text=build+${repository_name}+done"
+    }
 }
-
-// def response_commit) {
-//     httpRequest "http://192.168.2.20:8001/message_sender/?person=${pusher}&text=build+${repository_name}+done"
-// }
 
 pipeline {
     agent {node {
@@ -15,9 +16,6 @@ pipeline {
       }
     }
 
-    environment {
-        ACTION = 'LOL'
-    }
 
     options {
         buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
@@ -27,7 +25,7 @@ pipeline {
     stages {
         stage('Deploying'){
              when { environment name: 'branch', value: 'refs/heads/master' }
-             // ACTION = 'DEPLOY'
+
              stages{
                stage("Clone Repo") {
                    steps {
@@ -67,7 +65,6 @@ pipeline {
         }
 
         stage('Commit'){
-          // ACTION = 'COMMIT'
           steps {
               echo'commit to $branch'
           }
@@ -76,5 +73,5 @@ pipeline {
 
     }
 }
-println "ACTION"
+
 response_build()
