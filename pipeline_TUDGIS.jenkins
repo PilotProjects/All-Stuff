@@ -40,7 +40,7 @@ pipeline {
                    steps {
                        withPythonEnv('/home/rt/projects/env_38/')
                            {
-                             sh 'pip3 install -r app/requirements.txt'
+                             // sh 'pip3 install -r app/requirements.txt'
                              sh 'python3 app/manage.py collectstatic --noinput'
                            }
                    }
