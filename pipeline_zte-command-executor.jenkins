@@ -24,7 +24,7 @@ pipeline {
 
     stages {
         stage('Deploying'){
-             when { environment name: 'branch', value: 'refs/heads/master' }
+             when { environment name: 'branch', value: 'refs/heads/main' }
 
              stages{
                stage("Clone Repo") {
@@ -36,43 +36,9 @@ pipeline {
                    }
                }
 
-               stage("venv actions collect static") {
-                   steps {
-                       withPythonEnv('/home/rt/projects/env_38/')
-                           {
-                             sh 'pip3 install -r app/requirements.txt'
-                             sh 'python3 app/manage.py collectstatic --noinput'
-                           }
-                   }
-               }
-
-               stage("docker compose down") {
-                   steps {
-                       sh 'docker-compose down'
-                   }
-               }
-               stage("docker-compose up") {
-                   steps {
-                       sh 'docker-compose up --build -d'
-                   }
-               }
-
-               stage("docker remove images") {
-                   steps {
-                       sh 'docker rmi $(docker images -f dangling=true -q)'
-                   }
-               }
              }
-        }
-
-        stage('Commit'){
-          steps {
-              echo'commit to $branch'
-          }
-
         }
 
     }
 }
 
-response_build()
