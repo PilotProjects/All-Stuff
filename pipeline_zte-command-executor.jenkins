@@ -27,7 +27,7 @@ pipeline {
              when { environment name: 'branch', value: 'refs/heads/main' }
 
              stages{
-               stage("Clone Repo") {
+               stage("Clone Repo ") {
                    steps {
                        sh 'whoami'
                        git branch: 'main',
