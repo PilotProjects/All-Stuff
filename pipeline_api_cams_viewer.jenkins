@@ -35,22 +35,24 @@ pipeline {
                    }
                }
 
-               stage("docker compose down") {
-                   steps {
-                       sh 'docker-compose down'
-                   }
-               }
-               stage("docker-compose up") {
-                   steps {
-                       sh 'docker-compose up --build -d'
-                   }
-               }
+               // stage("docker compose down") {
+               //     steps {
+               //         sh 'docker-compose down'
+               //     }
+               // }
+               // stage("docker-compose up") {
+               //     steps {
+               //         sh 'docker-compose up --build -d'
+               //     }
+               // }
+               //
+               // stage("docker remove images") {
+               //     steps {
+               //         sh 'docker rmi $(docker images -f dangling=true -q)'
+               //     }
+               // }
 
-               stage("docker remove images") {
-                   steps {
-                       sh 'docker rmi $(docker images -f dangling=true -q)'
-                   }
-               }
+
              }
         }
 
