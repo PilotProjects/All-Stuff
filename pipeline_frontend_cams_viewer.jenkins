@@ -1,0 +1,69 @@
+#!groovy
+// Check ub1 properties
+def response_build() {
+    if (env.branch != "refs/heads/frontend"){
+      httpRequest "http://192.168.2.20:8001/message_sender/?person=${pusher}&text=just_commit"
+    }
+    else {
+      httpRequest "http://192.168.2.20:8001/message_sender/?person=${pusher}&text=build+${repository_name}+done"
+    }
+}
+
+pipeline {
+    agent {node {
+      label 'production_server'
+      customWorkspace '/home/rt/jenkins/workspace/frontend_cams_viewer_api'
+      }
+    }
+
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
+        timestamps()
+    }
+
+    stages {
+        stage('Deploying'){
+             when { environment name: 'branch', value: 'refs/heads/frontend' }
+
+             stages{
+               stage("Clone Repo") {
+                   steps {
+                       sh 'whoami'
+                       git branch: 'frontend',
+                           credentialsId: 'b9e49e7d-d9bd-449c-923b-59c818b049f8',
+                           url: 'https://github.com/PilotProjects/cams_viewer.git'
+                   }
+               }
+
+               stage("docker compose down") {
+                   steps {
+                       sh 'docker-compose down'
+                   }
+               }
+
+               stage("docker compose up") {
+                   steps {
+                       sh 'docker-compose up --build -d'
+                   }
+               }
+
+               stage("docker remove images") {
+                   steps {
+                       sh 'docker rmi $(docker images -f dangling=true -q)'
+                   }
+               }
+
+             }
+        }
+
+        stage('Commit'){
+          steps {
+              echo'commit to $branch'
+          }
+
+        }
+
+    }
+}
+
+response_build()
