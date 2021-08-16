@@ -22,7 +22,7 @@ pipeline {
             steps {
                 sh 'whoami'
                 git branch: 'loba',
-                    credentialsId: 'b9e49e7d-d9bd-449c-923b-59c818b049f8',
+                    credentialsId: 'baed5953-aca8-419d-b37e-b5e24ecc6ebb',
                     url: 'https://github.com/PilotProjects/camera_gis'
             }
         }
