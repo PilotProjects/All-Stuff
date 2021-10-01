@@ -23,7 +23,7 @@ pipeline {
 
     stages {
         stage('Deploying'){
-             when { environment name: 'branch', value: 'refs/heads/mmain' }
+             when { environment name: 'branch', value: 'refs/heads/main' }
 
              stages{
                stage("Clone Repo") {
