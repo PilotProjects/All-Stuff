@@ -29,7 +29,7 @@ pipeline {
                stage("Clone Repo") {
                    steps {
                        sh 'whoami'
-                       git branch: 'master',
+                       git branch: 'main',
                            credentialsId: 'baed5953-aca8-419d-b37e-b5e24ecc6ebb',
                            url: 'https://github.com/PilotProjects/censor_api.git'
                    }
