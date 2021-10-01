@@ -1,7 +1,7 @@
 #!groovy
 // Check ub1 properties
 def response_build() {
-    if (env.branch != "refs/heads/master"){
+    if (env.branch != "refs/heads/main"){
       httpRequest "http://192.168.2.20:8001/message_sender/?person=${pusher}&text=just_commit"
     }
     else {
