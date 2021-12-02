@@ -36,16 +36,6 @@ pipeline {
                    }
                }
 
-               stage("venv actions collec tstatic") {
-                   steps {
-                       withPythonEnv('/home/rt/projects/env_38/')
-                           {
-                             sh 'pip3 install -r app/requirements.txt'
-                             sh 'python3 app/manage.py collectstatic --noinput'
-                           }
-                   }
-               }
-
                stage("docker compose down") {
                    steps {
                        sh 'docker-compose down'
