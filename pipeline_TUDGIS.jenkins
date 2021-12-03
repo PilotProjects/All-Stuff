@@ -38,7 +38,7 @@ pipeline {
 
                stage("docker compose down") {
                    steps {
-                       sh 'docker-compose down'
+                       sh 'docker-compose down -v'
                    }
                }
                stage("docker-compose up") {
